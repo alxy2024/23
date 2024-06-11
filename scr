@@ -1,0 +1,52 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.util.Random;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+public class SpaceViewJava extends JPanel {
+
+    private static final long serialVersionUID = 1L;
+    private Random random;
+    private Ellipse2D sun;
+
+    public SpaceViewJava() {
+        setBackground(java.awt.Color.BLACK);
+        random = new Random();
+        sun = new Ellipse2D.Double(getWidth() / 2 - 25, getHeight() / 2 - 25, 50, 50);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Рисуем звездное небо
+        for (int i = 0; i < 500; i++) {
+            int x = random.nextInt(getWidth());
+            int y = random.nextInt(getHeight());
+            g2d.fillOval(x, y, 1, 1);
+        }
+
+        // Рисуем Солнце
+        g2d.setColor(java.awt.Color.YELLOW);
+        g2d.fill(sun);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> createAndShowGui());
+    }
+
+    private static void createAndShowGui() {
+        JFrame frame = new JFrame("Space View");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(new SpaceViewJava());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
